@@ -562,6 +562,9 @@
       if (json.ok) {
         res.className   = 'ok';
         res.textContent = 'Connected! Sheet is accessible and ready.';
+        settings.sheetUrl = url;
+        try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch(e) {}
+        updateSyncIndicator();
       } else {
         res.className   = 'error';
         res.textContent = 'Sheet responded but returned an error: ' + (json.error || 'unknown');
