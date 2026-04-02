@@ -550,7 +550,7 @@
       document.getElementById('pin-error').classList.add('show');
       pinBuffer = '';
       updatePinDots();
-      setTimeout(() => document.getElementById('pin-error').classList.remove('show'), 3000);
+      setTimeout(() => hidePinPrompt(), 3000);
     }
   }
 
