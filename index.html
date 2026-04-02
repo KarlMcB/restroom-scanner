@@ -11,51 +11,61 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --page-bg:       #f0edf8;
+      --page-bg:       #EEF2FF;
       --card-bg:       #ffffff;
-      --card-bg2:      #f7f4fd;
-      --accent:        #a78bda;
-      --accent-light:  #ede8f9;
-      --accent-dark:   #6d4fb5;
-      --text:          #2d2340;
-      --text-muted:    #8878a8;
-      --border:        rgba(167,139,218,0.18);
-      --border-med:    rgba(167,139,218,0.35);
-      --radius-md:     10px;
-      --radius-lg:     16px;
-      --radius-xl:     22px;
-      --out-bg:        #fff3dc;
-      --out-text:      #8a5c00;
-      --out-border:    #f5c842;
-      --in-bg:         #d9f5e8;
-      --in-text:       #1a6b43;
-      --in-border:     #4ecb8a;
-      --danger-bg:     #fce8e8;
-      --danger-text:   #a32d2d;
-      --danger-border: #e88888;
+      --card-bg2:      #F5F3FF;
+      --accent:        #7C3AED;
+      --accent-light:  #EDE9FE;
+      --accent-dark:   #5B21B6;
+      --accent2:       #EC4899;
+      --text:          #1E1B4B;
+      --text-muted:    #6B7280;
+      --border:        rgba(124,58,237,0.1);
+      --border-med:    rgba(124,58,237,0.22);
+      --radius-md:     12px;
+      --radius-lg:     18px;
+      --radius-xl:     24px;
+      --out-bg:        #FFF7ED;
+      --out-text:      #C2410C;
+      --out-border:    #FB923C;
+      --in-bg:         #F0FDF4;
+      --in-text:       #15803D;
+      --in-border:     #4ADE80;
+      --danger-bg:     #FFF1F2;
+      --danger-text:   #BE123C;
+      --danger-border: #FB7185;
+      --grad-main:     linear-gradient(135deg, #7C3AED, #EC4899);
+      --grad-start:    linear-gradient(135deg, #6D28D9, #7C3AED);
+      --shadow-card:   0 4px 20px rgba(124,58,237,0.10);
+      --shadow-btn:    0 2px 10px rgba(124,58,237,0.25);
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --page-bg:      #1a1628;
-        --card-bg:      #241e38;
-        --card-bg2:     #1f1932;
-        --accent:       #9b7fd4;
-        --accent-light: #2e2050;
-        --accent-dark:  #c4aaef;
-        --text:         #eae6f8;
-        --text-muted:   #8878a8;
-        --border:       rgba(155,127,212,0.18);
-        --border-med:   rgba(155,127,212,0.35);
-        --out-bg:       #3d2e00;
-        --out-text:     #fcd97a;
-        --out-border:   #b38a00;
-        --in-bg:        #0d3322;
-        --in-text:      #6ee7b7;
-        --in-border:    #1a6b43;
-        --danger-bg:    #3a1010;
-        --danger-text:  #f7a0a0;
-        --danger-border:#a32d2d;
+        --page-bg:      #0F0A1E;
+        --card-bg:      #1A1332;
+        --card-bg2:     #150F2A;
+        --accent:       #A78BFA;
+        --accent-light: #2D1F5E;
+        --accent-dark:  #C4B5FD;
+        --accent2:      #F472B6;
+        --text:         #EDE9FE;
+        --text-muted:   #8B7DB5;
+        --border:       rgba(167,139,250,0.12);
+        --border-med:   rgba(167,139,250,0.25);
+        --out-bg:       #431407;
+        --out-text:     #FDBA74;
+        --out-border:   #C2410C;
+        --in-bg:        #052E16;
+        --in-text:      #86EFAC;
+        --in-border:    #166534;
+        --danger-bg:    #4C0519;
+        --danger-text:  #FDA4AF;
+        --danger-border:#9F1239;
+        --grad-main:    linear-gradient(135deg, #A78BFA, #F472B6);
+        --grad-start:   linear-gradient(135deg, #7C3AED, #A78BFA);
+        --shadow-card:  0 4px 20px rgba(0,0,0,0.4);
+        --shadow-btn:   0 2px 10px rgba(124,58,237,0.4);
       }
     }
 
@@ -69,11 +79,14 @@
     #app { max-width: 600px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
 
     /* ── Header ── */
-    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
     .header-left { display: flex; align-items: center; gap: 10px; }
-    .header-icon { font-size: 28px; line-height: 1; }
-    .header-titles h1 { font-size: 20px; font-weight: 600; color: var(--accent-dark); letter-spacing: -0.01em; }
-    .header-titles .subtitle { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+    .header-titles h1 {
+      font-size: 21px; font-weight: 700; letter-spacing: -0.02em;
+      background: var(--grad-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header-titles .subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
     /* Sync status dot */
     #sync-status {
@@ -95,8 +108,9 @@
       border-radius: var(--radius-md); padding: 8px; cursor: pointer;
       display: flex; flex-direction: column; gap: 4px;
       -webkit-tap-highlight-color: transparent;
+      box-shadow: var(--shadow-card);
     }
-    #hamburger span { display: block; width: 20px; height: 2px; background: var(--accent-dark); border-radius: 2px; }
+    #hamburger span { display: block; width: 20px; height: 2px; background: var(--accent); border-radius: 2px; }
 
     /* ── Settings drawer ── */
     #settings-overlay {
@@ -137,9 +151,10 @@
     .setting-divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
     .setting-section-title { font-size: 12px; font-weight: 600; color: var(--accent-dark); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
     #save-settings {
-      width: 100%; padding: 12px; background: var(--accent);
+      width: 100%; padding: 12px; background: var(--grad-main);
       color: #fff; border: none; border-radius: var(--radius-md);
-      font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 0.5rem;
+      font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 0.5rem;
+      box-shadow: var(--shadow-btn);
     }
     #save-settings:active { transform: scale(0.97); }
     #test-connection-btn {
@@ -160,7 +175,10 @@
     #scanner-box {
       position: relative; width: 100%; aspect-ratio: 4/3;
       background: #0d0a1a; border-radius: var(--radius-xl);
-      overflow: hidden; margin-bottom: 1rem; border: 2px solid var(--border-med);
+      overflow: hidden; margin-bottom: 1rem;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      box-shadow: 0 0 0 2px #7C3AED, 0 0 0 4px #EC4899, var(--shadow-card);
     }
     #video { width: 100%; height: 100%; object-fit: cover; display: block; }
     #scan-line {
@@ -211,38 +229,40 @@
       font-weight: 500; -webkit-tap-highlight-color: transparent; transition: transform 0.1s;
     }
     button:active { transform: scale(0.96); }
-    #start-btn  { background: var(--accent-light); color: var(--accent-dark); border-color: var(--accent); }
+    #start-btn {
+      background: var(--grad-start); color: #fff; border: none;
+      font-weight: 600; box-shadow: var(--shadow-btn);
+    }
 
     /* ── Manual entry ── */
     .manual-row { display: flex; gap: 8px; margin-bottom: 0.75rem; }
     .manual-row input {
-      flex: 1; padding: 10px 14px; border-radius: var(--radius-md);
-      border: 1.5px solid var(--border-med); background: var(--card-bg);
-      color: var(--text); font-size: 16px; pointer-events: none;
+      flex: 1; padding: 12px 16px; border-radius: var(--radius-md);
+      border: 2px solid var(--border-med); background: var(--card-bg);
+      color: var(--text); font-size: 20px; font-weight: 600;
+      pointer-events: none; letter-spacing: 0.08em;
+      box-shadow: var(--shadow-card);
     }
-    .manual-row input::placeholder { color: var(--text-muted); }
-    .manual-row input:focus { outline: none; border-color: var(--accent); }
+    .manual-row input::placeholder { color: var(--text-muted); font-weight: 400; font-size: 14px; letter-spacing: 0; }
 
     /* ── Number pad ── */
     .numpad {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
       margin-bottom: 1.25rem;
     }
     .numpad button {
-      padding: 16px 8px; font-size: 20px; font-weight: 500;
+      padding: 18px 8px; font-size: 22px; font-weight: 500;
       border-radius: var(--radius-md); border: 1.5px solid var(--border-med);
       background: var(--card-bg); color: var(--text); cursor: pointer;
       min-width: unset; -webkit-tap-highlight-color: transparent;
-      transition: transform 0.1s;
+      transition: transform 0.1s; box-shadow: var(--shadow-card);
     }
-    .numpad button:active { transform: scale(0.94); }
+    .numpad button:active { transform: scale(0.93); }
     .numpad .numpad-log {
-      background: var(--accent-light); color: var(--accent-dark);
-      border-color: var(--accent); font-size: 16px; font-weight: 600;
+      background: var(--grad-main); color: #fff; border: none;
+      font-size: 16px; font-weight: 700; box-shadow: var(--shadow-btn);
     }
-    .numpad .numpad-del {
-      font-size: 18px;
-    }
+    .numpad .numpad-del { font-size: 20px; color: var(--text-muted); }
 
     /* ── Clear log (settings) ── */
     #clear-log-btn {
@@ -253,35 +273,38 @@
     }
     #clear-log-btn:active { transform: scale(0.97); }
 
-    /* ── Stats ── */
-    .stats { display: grid; grid-template-columns: minmax(0,1fr); gap: 10px; margin-bottom: 1.25rem; }
-    .stat-card { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 12px 10px; text-align: center; }
-    .stat-out-card { border-color: var(--out-border); }
-    .stat-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .stat-val { font-size: 28px; font-weight: 600; color: var(--text); }
-    .stat-out-card .stat-val { color: var(--out-text); }
-
     /* ── Log ── */
-    #log-section h2 { font-size: 15px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-    .saved-note { font-size: 11px; color: var(--text-muted); font-weight: 400; }
-    .log-wrapper { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    #log-section h2 {
+      font-size: 15px; font-weight: 700; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+      background: var(--grad-main); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .saved-note {
+      font-size: 11px; font-weight: 400;
+      background: none; -webkit-text-fill-color: var(--text-muted); color: var(--text-muted);
+    }
+    .log-wrapper {
+      background: var(--card-bg); border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-card);
+    }
     #log-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     #log-table th {
-      text-align: left; padding: 9px 10px; color: var(--text-muted); font-weight: 500;
+      text-align: left; padding: 10px 12px; color: var(--text-muted); font-weight: 600;
       border-bottom: 1px solid var(--border); background: var(--card-bg2);
-      font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
     }
-    #log-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+    #log-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
     #log-table tr:last-child td { border-bottom: none; }
     #log-table tbody tr:first-child td { animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
-    .badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-    .badge-out  { background: var(--out-bg); color: var(--out-text); }
-    .badge-in   { background: var(--in-bg);  color: var(--in-text); }
-    .badge-late { background: var(--danger-bg); color: var(--danger-text); }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .badge-out  { background: #FFF7ED; color: #C2410C; }
+    .badge-in   { background: #F0FDF4; color: #15803D; }
+    .badge-late { background: #FFF1F2; color: #BE123C; }
     .mins-cell { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
-    .mins-over { color: var(--danger-text); font-weight: 600; }
-    #empty-msg { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 13px; }
+    .mins-over { color: #BE123C; font-weight: 700; }
+    #empty-msg { text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 13px; }
 
     /* ── Toast ── */
     .toast {
@@ -394,13 +417,6 @@
     <button class="numpad-del" onclick="numpadDelete()">⌫</button>
     <button onclick="numpadPress('0')">0</button>
     <button class="numpad-log" onclick="manualLog()">Log</button>
-  </div>
-
-  <div class="stats">
-    <div class="stat-card stat-out-card">
-      <div class="stat-label">Out now</div>
-      <div class="stat-val" id="stat-out">0</div>
-    </div>
   </div>
 
   <div id="log-section">
@@ -568,7 +584,7 @@
       if (savedStatus)   studentStatus = JSON.parse(savedStatus);
       if (savedCheckout) checkoutTimes = JSON.parse(savedCheckout);
     } catch(e) { log = []; studentStatus = {}; checkoutTimes = {}; }
-    updateTable(); updateStats(); updateSavedNote();
+    updateTable(); updateSavedNote();
   }
 
   function saveToStorage() {
@@ -720,7 +736,6 @@
     log.unshift(entry);
     saveToStorage();
     updateTable();
-    updateStats();
 
     // Sync to Google Sheets (non-blocking)
     syncAppendToSheet(entry);
@@ -771,18 +786,13 @@
     }).join('');
   }
 
-  function updateStats() {
-    const vals = Object.values(studentStatus);
-    document.getElementById('stat-out').textContent = vals.filter(v => v === 'out').length;
-  }
-
   /* ═══════════════════════════════
      ACTIONS
   ═══════════════════════════════ */
   function clearLog() {
     if (!confirm('Clear the entire log? This will also clear the Google Sheet if connected.')) return;
     log = []; studentStatus = {}; checkoutTimes = {}; lastScanned = '';
-    saveToStorage(); updateTable(); updateStats();
+    saveToStorage(); updateTable();
     syncClearSheet();
     closeSettings();
     showToast('Log cleared', 'neutral');
