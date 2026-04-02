@@ -45,10 +45,12 @@ function readAll() {
   const sheet  = getOrCreateSheet();
   const values = sheet.getDataRange().getValues();
 
+  const tz = Session.getScriptTimeZone();
+
   // Skip header row (index 0)
   const entries = values.slice(1).map(row => ({
-    date:              row[0] ? String(row[0]) : '',
-    time:              row[1] ? String(row[1]) : '',
+    date:              row[0] instanceof Date ? Utilities.formatDate(row[0], tz, 'M/d/yyyy')    : (row[0] ? String(row[0]) : ''),
+    time:              row[1] instanceof Date ? Utilities.formatDate(row[1], tz, 'h:mm:ss a')  : (row[1] ? String(row[1]) : ''),
     id:                row[2] ? String(row[2]) : '',
     action:            row[3] ? String(row[3]) : '',
     minsGone:          row[4] !== '' && row[4] !== null ? Number(row[4]) : null,
