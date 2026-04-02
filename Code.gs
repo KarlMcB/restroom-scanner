@@ -29,11 +29,13 @@ function doGet(e) {
 function appendRow(entry) {
   const sheet = getOrCreateSheet();
   sheet.appendRow([
-    entry.date     || '',
-    entry.time     || '',
-    entry.id       || '',
-    entry.action   || '',
-    entry.minsGone !== null && entry.minsGone !== undefined ? entry.minsGone : ''
+    entry.date              || '',
+    entry.time              || '',
+    entry.id                || '',
+    entry.action            || '',
+    entry.minsGone !== null && entry.minsGone !== undefined ? entry.minsGone : '',
+    entry.checkoutTimestamp || '',
+    entry.incident          || ''
   ]);
   return jsonResponse({ ok: true });
 }
@@ -45,11 +47,13 @@ function readAll() {
 
   // Skip header row (index 0)
   const entries = values.slice(1).map(row => ({
-    date:     row[0] ? String(row[0]) : '',
-    time:     row[1] ? String(row[1]) : '',
-    id:       row[2] ? String(row[2]) : '',
-    action:   row[3] ? String(row[3]) : '',
-    minsGone: row[4] !== '' && row[4] !== null ? Number(row[4]) : null
+    date:              row[0] ? String(row[0]) : '',
+    time:              row[1] ? String(row[1]) : '',
+    id:                row[2] ? String(row[2]) : '',
+    action:            row[3] ? String(row[3]) : '',
+    minsGone:          row[4] !== '' && row[4] !== null ? Number(row[4]) : null,
+    checkoutTimestamp: row[5] ? Number(row[5]) : null,
+    incident:          row[6] ? String(row[6]) : ''
   }));
 
   return jsonResponse({ ok: true, entries });
@@ -70,9 +74,9 @@ function getOrCreateSheet() {
 
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(['Date', 'Time', 'Student ID', 'Action', 'Minutes Gone']);
+    sheet.appendRow(['Date', 'Time', 'Student ID', 'Action', 'Minutes Gone', 'Checkout Timestamp', 'Incident']);
 
-    const header = sheet.getRange(1, 1, 1, 5);
+    const header = sheet.getRange(1, 1, 1, 7);
     header.setFontWeight('bold');
     header.setBackground('#ede8f9');
     header.setFontColor('#6d4fb5');
@@ -82,6 +86,8 @@ function getOrCreateSheet() {
     sheet.setColumnWidth(3, 120);
     sheet.setColumnWidth(4, 110);
     sheet.setColumnWidth(5, 120);
+    sheet.setColumnWidth(6, 160);
+    sheet.setColumnWidth(7, 200);
     sheet.setFrozenRows(1);
   }
 

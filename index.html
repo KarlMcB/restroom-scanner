@@ -642,6 +642,7 @@
         method: 'POST',
         body: JSON.stringify({ action: 'append', entry })
       });
+      lastWriteTime = Date.now();
       syncError = false;
       updateSyncIndicator('ok');
     } catch(e) {
@@ -664,6 +665,45 @@
     } catch(e) {
       syncError = true;
       updateSyncIndicator('error');
+    }
+  }
+
+  /* Poll the sheet every 15s — rebuilds state from sheet so all devices stay in sync */
+  let lastWriteTime = 0;
+  async function syncReadFromSheet() {
+    if (!settings.sheetUrl) return;
+    // Skip this poll if we wrote very recently (give the sheet time to update)
+    if (Date.now() - lastWriteTime < 5000) return;
+    try {
+      const response = await fetch(settings.sheetUrl + '?action=read', { method: 'GET' });
+      const json     = await response.json();
+      if (!json.ok || !Array.isArray(json.entries)) return;
+
+      // Rebuild state by replaying entries in chronological order (sheet order)
+      const newStatus       = {};
+      const newCheckoutTimes = {};
+      json.entries.forEach(e => {
+        if (!e.id) return;
+        newStatus[e.id] = e.action;
+        if (e.action === 'out' && e.checkoutTimestamp) {
+          newCheckoutTimes[e.id] = e.checkoutTimestamp;
+        } else if (e.action === 'in') {
+          delete newCheckoutTimes[e.id];
+        }
+      });
+
+      // Sheet returns oldest-first; app log is newest-first
+      log           = [...json.entries].reverse();
+      studentStatus = newStatus;
+      checkoutTimes = newCheckoutTimes;
+
+      syncError = false;
+      updateSyncIndicator('ok');
+      updateTable();
+      updateTheme();
+      updateSavedNote();
+    } catch(e) {
+      // Silent fail — will retry on next interval
     }
   }
 
@@ -879,10 +919,11 @@
     }
 
     const entry = {
-      date:     new Date().toLocaleDateString(),
-      time:     fmt(new Date()),
+      date:              new Date().toLocaleDateString(),
+      time:              fmt(new Date()),
       id, action,
-      minsGone: minsGone !== null ? minsGone : null,
+      minsGone:          minsGone !== null ? minsGone : null,
+      checkoutTimestamp: action === 'out' ? now : null,
       incident
     };
 
@@ -997,6 +1038,8 @@
   loadFromStorage();
   setInterval(() => { if (Object.values(studentStatus).some(v => v === 'out')) updateTable(); }, 10000);
   setInterval(reconnectLoop, 30000);
+  setInterval(syncReadFromSheet, 15000);
+  syncReadFromSheet(); // initial load from sheet on startup
 </script>
 </body>
 </html>
