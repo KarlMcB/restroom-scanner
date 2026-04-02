@@ -212,18 +212,46 @@
     }
     button:active { transform: scale(0.96); }
     #start-btn  { background: var(--accent-light); color: var(--accent-dark); border-color: var(--accent); }
-    #clear-btn  { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-border); }
 
     /* ── Manual entry ── */
-    .manual-row { display: flex; gap: 8px; margin-bottom: 1.25rem; }
+    .manual-row { display: flex; gap: 8px; margin-bottom: 0.75rem; }
     .manual-row input {
       flex: 1; padding: 10px 14px; border-radius: var(--radius-md);
       border: 1.5px solid var(--border-med); background: var(--card-bg);
-      color: var(--text); font-size: 16px;
+      color: var(--text); font-size: 16px; pointer-events: none;
     }
     .manual-row input::placeholder { color: var(--text-muted); }
     .manual-row input:focus { outline: none; border-color: var(--accent); }
-    .manual-row button { flex: 0 0 72px; background: var(--accent-light); color: var(--accent-dark); border-color: var(--accent); }
+
+    /* ── Number pad ── */
+    .numpad {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      margin-bottom: 1.25rem;
+    }
+    .numpad button {
+      padding: 16px 8px; font-size: 20px; font-weight: 500;
+      border-radius: var(--radius-md); border: 1.5px solid var(--border-med);
+      background: var(--card-bg); color: var(--text); cursor: pointer;
+      min-width: unset; -webkit-tap-highlight-color: transparent;
+      transition: transform 0.1s;
+    }
+    .numpad button:active { transform: scale(0.94); }
+    .numpad .numpad-log {
+      background: var(--accent-light); color: var(--accent-dark);
+      border-color: var(--accent); font-size: 16px; font-weight: 600;
+    }
+    .numpad .numpad-del {
+      font-size: 18px;
+    }
+
+    /* ── Clear log (settings) ── */
+    #clear-log-btn {
+      width: 100%; padding: 10px; background: var(--danger-bg);
+      color: var(--danger-text); border: 1.5px solid var(--danger-border);
+      border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
+      cursor: pointer; margin-top: 8px;
+    }
+    #clear-log-btn:active { transform: scale(0.97); }
 
     /* ── Stats ── */
     .stats { display: grid; grid-template-columns: minmax(0,1fr); gap: 10px; margin-bottom: 1.25rem; }
@@ -319,6 +347,11 @@
 
       <br/>
       <button id="save-settings" onclick="saveSettings()">Save settings</button>
+
+      <hr class="setting-divider" />
+      <div class="setting-section-title">Danger zone</div>
+      <div class="setting-desc">This will permanently delete the local log and clear the connected sheet.</div>
+      <button id="clear-log-btn" onclick="clearLog()">Clear log</button>
     </div>
   </div>
 
@@ -341,14 +374,26 @@
 
   <div class="btn-row">
     <button id="start-btn" onclick="toggleCamera()">Start scanning</button>
-    <button id="clear-btn" onclick="clearLog()">Clear log</button>
   </div>
 
   <div class="manual-row">
-    <input id="manual-input" type="number" inputmode="numeric" pattern="[0-9]*"
-           placeholder="Enter student ID manually…"
-           onkeydown="if(event.key==='Enter')manualLog()" />
-    <button onclick="manualLog()">Log</button>
+    <input id="manual-input" type="text" inputmode="none" readonly
+           placeholder="Enter student ID…" />
+  </div>
+
+  <div class="numpad">
+    <button onclick="numpadPress('1')">1</button>
+    <button onclick="numpadPress('2')">2</button>
+    <button onclick="numpadPress('3')">3</button>
+    <button onclick="numpadPress('4')">4</button>
+    <button onclick="numpadPress('5')">5</button>
+    <button onclick="numpadPress('6')">6</button>
+    <button onclick="numpadPress('7')">7</button>
+    <button onclick="numpadPress('8')">8</button>
+    <button onclick="numpadPress('9')">9</button>
+    <button class="numpad-del" onclick="numpadDelete()">⌫</button>
+    <button onclick="numpadPress('0')">0</button>
+    <button class="numpad-log" onclick="manualLog()">Log</button>
   </div>
 
   <div class="stats">
@@ -739,7 +784,18 @@
     log = []; studentStatus = {}; checkoutTimes = {}; lastScanned = '';
     saveToStorage(); updateTable(); updateStats();
     syncClearSheet();
+    closeSettings();
     showToast('Log cleared', 'neutral');
+  }
+
+  function numpadPress(digit) {
+    const input = document.getElementById('manual-input');
+    input.value += digit;
+  }
+
+  function numpadDelete() {
+    const input = document.getElementById('manual-input');
+    input.value = input.value.slice(0, -1);
   }
 
   function manualLog() {
