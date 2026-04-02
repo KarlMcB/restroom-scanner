@@ -256,6 +256,46 @@
     .welcome-status { font-size: 14px; color: rgba(255,255,255,0.75); margin-top: 8px; }
     .welcome-tap    { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 16px; letter-spacing: 0.04em; }
 
+    /* ── Spreadsheet viewer ── */
+    #sheet-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4); z-index: 300; align-items: flex-start; justify-content: center;
+    }
+    #sheet-overlay.open { display: flex; }
+    #sheet-panel {
+      background: var(--card-bg); width: 100%; max-width: 700px; height: 100vh;
+      padding: 1.5rem 1.25rem 2rem; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+    }
+    #sheet-panel h2 {
+      font-size: 17px; font-weight: 600; color: var(--accent-dark);
+      margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;
+    }
+    #close-sheet {
+      background: var(--accent-light); border: none; border-radius: var(--radius-md);
+      color: var(--accent-dark); font-size: 18px; width: 32px; height: 32px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      padding: 0; min-width: unset; flex: none;
+    }
+    #sheet-refresh-btn {
+      width: 100%; padding: 10px; background: var(--accent-light);
+      color: var(--accent-dark); border: 1.5px solid var(--accent);
+      border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
+      cursor: pointer; margin-bottom: 1rem;
+    }
+    #sheet-refresh-btn:active { transform: scale(0.97); }
+    #sheet-status { font-size: 12px; color: var(--text-muted); margin-bottom: 0.75rem; min-height: 18px; }
+    .sheet-table-wrapper { border: 1.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    #sheet-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    #sheet-table th {
+      text-align: left; padding: 9px 10px; color: var(--text-muted); font-weight: 600;
+      border-bottom: 1px solid var(--border); background: var(--card-bg2);
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
+    }
+    #sheet-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    #sheet-table tr:last-child td { border-bottom: none; }
+    #sheet-table .incident-cell { color: var(--danger-text); font-size: 11px; font-weight: 500; }
+    #sheet-empty { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 13px; }
+
     /* ── Conflict warning overlay ── */
     #conflict-overlay {
       display: none; position: absolute; inset: 0;
@@ -333,6 +373,13 @@
     .numpad .numpad-del { font-size: 20px; color: var(--text-muted); }
 
     /* ── Clear log (settings) ── */
+    #view-sheet-btn {
+      width: 100%; padding: 10px; background: var(--accent-light);
+      color: var(--accent-dark); border: 1.5px solid var(--accent);
+      border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
+      cursor: pointer; margin-top: 0;
+    }
+    #view-sheet-btn:active { transform: scale(0.97); }
     #clear-log-btn {
       width: 100%; padding: 10px; background: var(--danger-bg);
       color: var(--danger-text); border: 1.5px solid var(--danger-border);
@@ -440,9 +487,34 @@
       <button id="save-settings" onclick="saveSettings()">Save settings</button>
 
       <hr class="setting-divider" />
+      <div class="setting-section-title">Data</div>
+      <button id="view-sheet-btn" onclick="openSheetViewer()">View spreadsheet</button>
+
+      <hr class="setting-divider" />
       <div class="setting-section-title">Danger zone</div>
       <div class="setting-desc">This will permanently delete the local log and clear the connected sheet.</div>
       <button id="clear-log-btn" onclick="clearLog()">Clear log</button>
+    </div>
+  </div>
+
+  <!-- Spreadsheet viewer -->
+  <div id="sheet-overlay" onclick="sheetOverlayClick(event)">
+    <div id="sheet-panel">
+      <h2>Spreadsheet Log <button id="close-sheet" onclick="closeSheetViewer()">✕</button></h2>
+      <button id="sheet-refresh-btn" onclick="loadSheetData()">↻ Refresh</button>
+      <div id="sheet-status"></div>
+      <div class="sheet-table-wrapper">
+        <table id="sheet-table">
+          <thead>
+            <tr>
+              <th>Date</th><th>Time</th><th>Student ID</th><th>Action</th><th>Mins</th><th>Incident</th>
+            </tr>
+          </thead>
+          <tbody id="sheet-body">
+            <tr><td colspan="6" id="sheet-empty">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -704,6 +776,70 @@
       updateSavedNote();
     } catch(e) {
       // Silent fail — will retry on next interval
+    }
+  }
+
+  /* ── Spreadsheet viewer ── */
+  function openSheetViewer() {
+    document.getElementById('sheet-overlay').classList.add('open');
+    loadSheetData();
+  }
+
+  function closeSheetViewer() {
+    document.getElementById('sheet-overlay').classList.remove('open');
+  }
+
+  function sheetOverlayClick(e) {
+    if (e.target === document.getElementById('sheet-overlay')) closeSheetViewer();
+  }
+
+  async function loadSheetData() {
+    const status = document.getElementById('sheet-status');
+    const tbody  = document.getElementById('sheet-body');
+    status.textContent = 'Loading…';
+    tbody.innerHTML = '<tr><td colspan="6" id="sheet-empty">Loading…</td></tr>';
+
+    if (!settings.sheetUrl) {
+      status.textContent = 'No sheet URL configured.';
+      return;
+    }
+
+    try {
+      const response = await fetch(settings.sheetUrl + '?action=read', { method: 'GET' });
+      const json     = await response.json();
+      if (!json.ok || !Array.isArray(json.entries)) {
+        status.textContent = 'Error loading data.';
+        return;
+      }
+
+      const entries = [...json.entries].reverse(); // newest first
+      status.textContent = entries.length + ' row' + (entries.length !== 1 ? 's' : '') + ' · Last refreshed ' + fmt(new Date());
+
+      if (entries.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" id="sheet-empty">No data in spreadsheet yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = entries.map(e => {
+        const actionBadge = e.action === 'out'
+          ? '<span class="badge badge-out">Out</span>'
+          : '<span class="badge badge-in">In</span>';
+        const incidentCell = e.incident
+          ? `<td class="incident-cell">${e.incident}</td>`
+          : '<td style="color:var(--text-muted)">—</td>';
+        const mins = e.minsGone !== null && e.minsGone !== undefined ? e.minsGone + ' min' : '—';
+        return `<tr>
+          <td style="color:var(--text-muted);white-space:nowrap;">${e.date}</td>
+          <td style="color:var(--text-muted);white-space:nowrap;">${e.time}</td>
+          <td><strong>${e.id}</strong></td>
+          <td>${actionBadge}</td>
+          <td class="mins-cell">${mins}</td>
+          ${incidentCell}
+        </tr>`;
+      }).join('');
+    } catch(err) {
+      status.textContent = 'Could not reach the sheet.';
+      tbody.innerHTML = '<tr><td colspan="6" id="sheet-empty">Connection failed.</td></tr>';
     }
   }
 
