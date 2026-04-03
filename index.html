@@ -1318,7 +1318,7 @@
   loadFromStorage();
   setInterval(() => { if (Object.values(studentStatus).some(v => v === 'out')) updateTable(); }, 10000);
   setInterval(reconnectLoop, 30000);
-  setInterval(syncReadFromSheet, 15000);
+  setInterval(syncReadFromSheet, 5000);
   syncReadFromSheet(); // initial load from sheet on startup
   syncReadRoster();    // load student roster on startup
 </script>
