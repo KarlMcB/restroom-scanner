@@ -457,6 +457,41 @@
     .mins-over { color: #BE123C; font-weight: 700; }
     #empty-msg { text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 13px; }
 
+    /* ── Landscape two-column layout ── */
+    #landscape-left  { display: contents; }
+    #landscape-right { display: contents; }
+
+    @media (orientation: landscape) {
+      #app {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1rem;
+        max-width: 100%;
+        padding: 0.6rem 0.75rem;
+      }
+      #landscape-left {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+      }
+      #landscape-right {
+        display: flex;
+        flex-direction: column;
+        width: 44%;
+        flex-shrink: 0;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      #landscape-left header { margin-bottom: 0.6rem; }
+      #scanner-box { margin-bottom: 0.5rem; }
+      .btn-row { margin-bottom: 0.5rem; }
+      .log-wrapper { max-height: 38vh; overflow-y: auto; }
+      .manual-row { margin-bottom: 0.5rem; }
+      .numpad { margin-bottom: 0; }
+    }
+
     /* ── Toast ── */
     .toast {
       position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%);
@@ -470,24 +505,6 @@
 </head>
 <body>
 <div id="app">
-
-  <header>
-    <div class="header-left">
-      <div class="header-titles">
-        <h1>Restroom Pass Manager</h1>
-        <p class="subtitle">Scan a student ID to check out or check in</p>
-      </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div id="sync-status">
-        <div class="sync-dot" id="sync-dot"></div>
-        <span id="sync-label">no sheet</span>
-      </div>
-      <button id="hamburger" onclick="openSettings()" aria-label="Settings">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
 
   <!-- Settings drawer -->
   <div id="settings-overlay" onclick="overlayClick(event)">
@@ -572,6 +589,25 @@
     </div>
   </div>
 
+  <div id="landscape-left">
+  <header>
+    <div class="header-left">
+      <div class="header-titles">
+        <h1>Restroom Pass Manager</h1>
+        <p class="subtitle">Scan a student ID to check out or check in</p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div id="sync-status">
+        <div class="sync-dot" id="sync-dot"></div>
+        <span id="sync-label">no sheet</span>
+      </div>
+      <button id="hamburger" onclick="openSettings()" aria-label="Settings">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
   <!-- Scanner -->
   <div id="scanner-box">
     <video id="video" playsinline autoplay muted></video>
@@ -622,6 +658,20 @@
     <button id="start-btn" onclick="toggleCamera()">Start scanning</button>
   </div>
 
+  <div id="log-section">
+    <h2>Activity log <span class="saved-note" id="saved-note"></span></h2>
+    <div class="log-wrapper">
+      <table id="log-table">
+        <thead><tr><th>Time</th><th>Name</th><th>Action</th><th>Mins</th></tr></thead>
+        <tbody id="log-body">
+          <tr><td colspan="4" id="empty-msg">No scans yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div><!-- end landscape-left -->
+
+  <div id="landscape-right">
   <div class="manual-row">
     <input id="manual-input" type="text" inputmode="none" readonly
            placeholder="Use the keypad below to enter your Student ID…" />
@@ -641,18 +691,7 @@
     <button onclick="numpadPress('0')">0</button>
     <button class="numpad-log" onclick="manualLog()">Log</button>
   </div>
-
-  <div id="log-section">
-    <h2>Activity log <span class="saved-note" id="saved-note"></span></h2>
-    <div class="log-wrapper">
-      <table id="log-table">
-        <thead><tr><th>Time</th><th>Name</th><th>Action</th><th>Mins</th></tr></thead>
-        <tbody id="log-body">
-          <tr><td colspan="4" id="empty-msg">No scans yet</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  </div><!-- end landscape-right -->
 </div>
 
 <div class="toast" id="toast"></div>
