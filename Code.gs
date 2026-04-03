@@ -27,10 +27,11 @@ function doGet(e) {
   return jsonResponse({ ok: true, message: 'Restroom Pass Log API is running.' });
 }
 
-/* ── Append a single log entry row ── */
+/* ── Insert a new log entry at the top (row 2, below header) ── */
 function appendRow(entry) {
   const sheet = getOrCreateSheet();
-  sheet.appendRow([
+  sheet.insertRowAfter(1);
+  sheet.getRange(2, 1, 1, 8).setValues([[
     entry.date              || '',
     entry.time              || '',
     entry.id                || '',
@@ -39,7 +40,7 @@ function appendRow(entry) {
     entry.minsGone !== null && entry.minsGone !== undefined ? entry.minsGone : '',
     entry.checkoutTimestamp || '',
     entry.incident          || ''
-  ]);
+  ]]);
   return jsonResponse({ ok: true });
 }
 

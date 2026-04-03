@@ -1002,7 +1002,8 @@
       // Rebuild state by replaying entries in chronological order (sheet order)
       const newStatus       = {};
       const newCheckoutTimes = {};
-      json.entries.forEach(e => {
+      // Sheet is newest-first; replay oldest-first to get correct current status
+      [...json.entries].reverse().forEach(e => {
         if (!e.id || e.action === 'denied') return;
         newStatus[e.id] = e.action;
         if (e.action === 'out' && e.checkoutTimestamp) {
@@ -1012,8 +1013,8 @@
         }
       });
 
-      // Sheet returns oldest-first; app log is newest-first
-      log           = [...json.entries].reverse();
+      // Sheet already returns newest-first
+      log           = json.entries;
       studentStatus = newStatus;
       checkoutTimes = newCheckoutTimes;
 
