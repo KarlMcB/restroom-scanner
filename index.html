@@ -1027,7 +1027,7 @@
     const isLate  = minsGone >= maxMins;
     const ov      = document.getElementById('welcome-overlay');
     document.getElementById('welcome-emoji').textContent  = isLate ? '⚠️' : '✅';
-    document.getElementById('welcome-name').textContent   = 'ID: ' + id;
+    document.getElementById('welcome-name').textContent   = isLate ? 'ID: ' + id : 'Welcome Back!';
     document.getElementById('welcome-time').textContent   =
       minsGone < 1 ? 'Gone less than a minute' :
       minsGone === 1 ? 'Gone 1 minute' : 'Gone ' + minsGone + ' minutes';
