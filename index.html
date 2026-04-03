@@ -999,13 +999,20 @@
       const json     = await response.json();
       if (!json.ok || !Array.isArray(json.entries)) return;
 
-      // Sheet is newest-first; first entry per student IS their current status
+      // Detect sheet ordering by comparing first vs last checkoutTimestamp
+      const outEntries = json.entries.filter(e => e.action === 'out' && e.checkoutTimestamp);
+      const newestFirst = outEntries.length >= 2
+        && outEntries[0].checkoutTimestamp > outEntries[outEntries.length - 1].checkoutTimestamp;
+
+      // Normalise to newest-first so first entry per student = their current status
+      const ordered = newestFirst ? json.entries : [...json.entries].reverse();
+
       const newStatus        = {};
       const newCheckoutTimes = {};
       const seenIds          = new Set();
-      json.entries.forEach(e => {
+      ordered.forEach(e => {
         if (!e.id || e.action === 'denied') return;
-        if (seenIds.has(e.id)) return;          // already captured most recent
+        if (seenIds.has(e.id)) return;   // first seen = most recent
         seenIds.add(e.id);
         newStatus[e.id] = e.action;
         if (e.action === 'out' && e.checkoutTimestamp) {
