@@ -609,7 +609,7 @@
 
   <div class="manual-row">
     <input id="manual-input" type="text" inputmode="none" readonly
-           placeholder="Enter student ID…" />
+           placeholder="Use the keypad below to enter your Student ID…" />
   </div>
 
   <div class="numpad">
@@ -631,7 +631,7 @@
     <h2>Activity log <span class="saved-note" id="saved-note"></span></h2>
     <div class="log-wrapper">
       <table id="log-table">
-        <thead><tr><th>Time</th><th>Student ID</th><th>Action</th><th>Mins</th></tr></thead>
+        <thead><tr><th>Time</th><th>Name</th><th>Action</th><th>Mins</th></tr></thead>
         <tbody id="log-body">
           <tr><td colspan="4" id="empty-msg">No scans yet</td></tr>
         </tbody>
@@ -758,7 +758,7 @@
       label.textContent = 'sync error';
     } else {
       dot.className = 'sync-dot ok';
-      label.textContent = 'sheet linked';
+      label.innerHTML = 'sheet<br>linked';
     }
   }
 
@@ -986,9 +986,7 @@
   }
 
   function updateSavedNote() {
-    const hasSheet = !!settings.sheetUrl;
-    document.getElementById('saved-note').textContent =
-      log.length > 0 ? (hasSheet ? '(local + sheet)' : '(saved locally)') : '';
+    document.getElementById('saved-note').textContent = '';
   }
 
   /* ═══════════════════════════════
