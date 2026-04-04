@@ -1078,7 +1078,6 @@
     try {
       const snap = await db.collection('classrooms')
         .where('teacherId', '==', currentUser.uid)
-        .orderBy('createdAt', 'asc')
         .get();
       list.innerHTML = '';
       if (snap.empty) {
