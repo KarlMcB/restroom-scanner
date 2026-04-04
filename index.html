@@ -915,6 +915,24 @@
     setTimeout(updateLayoutOrientation, 150);
   });
 
+  document.addEventListener('keydown', function(e) {
+    // Don't intercept when typing in a real input/textarea (other than the numpad display)
+    const tag = document.activeElement && document.activeElement.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    if (e.key >= '0' && e.key <= '9') {
+      e.preventDefault();
+      numpadPress(e.key);
+    } else if (e.key === 'Backspace') {
+      e.preventDefault();
+      numpadDelete();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      manualLog();
+    }
+  });
+
   /* ═══════════════════════════════
      GOOGLE SHEETS SYNC
   ═══════════════════════════════ */
