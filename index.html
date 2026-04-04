@@ -124,7 +124,7 @@
     }
     .header-titles .subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-    /* Sync status dot */
+    /* Roster status dot */
     #sync-status {
       display: flex; align-items: center; gap: 5px;
       font-size: 11px; color: var(--text-muted);
@@ -194,19 +194,30 @@
       box-shadow: var(--shadow-btn);
     }
     #save-settings:active { transform: scale(0.97); }
-    #test-connection-btn {
+
+    /* Settings action buttons (roster, data) */
+    #upload-roster-btn, #view-sheet-btn, #export-csv-btn, #import-log-btn {
       width: 100%; padding: 10px; background: var(--accent-light);
       color: var(--accent-dark); border: 1.5px solid var(--accent);
       border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
       cursor: pointer; margin-top: 8px;
     }
-    #test-connection-btn:active { transform: scale(0.97); }
-    #connection-result {
-      font-size: 12px; margin-top: 8px; padding: 8px 10px;
-      border-radius: var(--radius-md); display: none; line-height: 1.5;
+    #upload-roster-btn:active, #view-sheet-btn:active,
+    #export-csv-btn:active, #import-log-btn:active { transform: scale(0.97); }
+    #clear-roster-btn {
+      width: 100%; padding: 10px; background: var(--danger-bg);
+      color: var(--danger-text); border: 1.5px solid var(--danger-border);
+      border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
+      cursor: pointer; margin-top: 8px;
     }
-    #connection-result.ok    { background: var(--in-bg); color: var(--in-text); }
-    #connection-result.error { background: var(--danger-bg); color: var(--danger-text); }
+    #clear-roster-btn:active { transform: scale(0.97); }
+    #clear-log-btn {
+      width: 100%; padding: 10px; background: var(--danger-bg);
+      color: var(--danger-text); border: 1.5px solid var(--danger-border);
+      border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
+      cursor: pointer; margin-top: 8px;
+    }
+    #clear-log-btn:active { transform: scale(0.97); }
 
     /* ── Scanner box ── */
     #scanner-box {
@@ -268,48 +279,6 @@
     #checkout-overlay.show { display: flex; }
     .checkout-msg  { font-size: 28px; font-weight: 700; color: #fff; line-height: 1.3; }
     .checkout-sub  { font-size: 16px; color: rgba(255,255,255,0.85); margin-top: 10px; }
-
-    /* ── Spreadsheet viewer ── */
-    #sheet-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4); z-index: 300; align-items: flex-start; justify-content: center;
-    }
-    #sheet-overlay.open { display: flex; }
-    #sheet-panel {
-      background: var(--card-bg); width: 100%; max-width: 700px; height: 100vh;
-      padding: 1.5rem 1.25rem 2rem; overflow-y: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
-    }
-    #sheet-panel h2 {
-      font-size: 17px; font-weight: 600; color: var(--accent-dark);
-      margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;
-    }
-    #close-sheet {
-      background: var(--accent-light); border: none; border-radius: var(--radius-md);
-      color: var(--accent-dark); font-size: 18px; width: 32px; height: 32px;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      padding: 0; min-width: unset; flex: none;
-    }
-    #sheet-refresh-btn {
-      width: 100%; padding: 10px; background: var(--accent-light);
-      color: var(--accent-dark); border: 1.5px solid var(--accent);
-      border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
-      cursor: pointer; margin-bottom: 1rem;
-    }
-    #sheet-refresh-btn:active { transform: scale(0.97); }
-    #sheet-status { font-size: 12px; color: var(--text-muted); margin-bottom: 0.75rem; min-height: 18px; }
-    .sheet-table-wrapper { border: 1.5px solid var(--border); border-radius: var(--radius-lg); overflow: auto; }
-    #sheet-table { width: max-content; min-width: 100%; border-collapse: collapse; font-size: 12px; }
-    #sheet-table th {
-      text-align: left; padding: 9px 10px; color: var(--text-muted); font-weight: 600;
-      border-bottom: 1px solid var(--border); background: var(--card-bg2);
-      font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
-    }
-    #sheet-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; white-space: normal; word-break: break-word; }
-    #sheet-table tr:last-child td { border-bottom: none; }
-    #sheet-table th:nth-child(1), #sheet-table td:nth-child(1) { width: 72px; font-size: 11px; }
-    #sheet-table th:nth-child(2), #sheet-table td:nth-child(2) { width: 60px; font-size: 11px; }
-    #sheet-table .incident-cell { color: var(--danger-text); font-size: 11px; font-weight: 500; min-width: 140px; }
-    #sheet-empty { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 13px; }
 
     /* ── Conflict warning overlay ── */
     #conflict-overlay {
@@ -410,31 +379,6 @@
       font-size: 16px; font-weight: 700; box-shadow: var(--shadow-btn);
     }
     .numpad .numpad-del { font-size: 20px; color: var(--text-muted); }
-
-    /* ── Clear log (settings) ── */
-    #view-sheet-btn {
-      width: 100%; padding: 10px; background: var(--accent-light);
-      color: var(--accent-dark); border: 1.5px solid var(--accent);
-      border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
-      cursor: pointer; margin-top: 0;
-    }
-    #view-sheet-btn:active { transform: scale(0.97); }
-    #clear-log-btn {
-      width: 100%; padding: 10px; background: var(--danger-bg);
-      color: var(--danger-text); border: 1.5px solid var(--danger-border);
-      border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
-      cursor: pointer; margin-top: 8px;
-    }
-    #clear-log-btn:active { transform: scale(0.97); }
-
-    /* ── View spreadsheet button ── */
-    #view-sheet-btn {
-      width: 100%; padding: 10px; background: var(--accent-light);
-      color: var(--accent-dark); border: 1.5px solid var(--accent);
-      border-radius: var(--radius-md); font-size: 14px; font-weight: 500;
-      cursor: pointer; margin-top: 8px;
-    }
-    #view-sheet-btn:active { transform: scale(0.97); }
 
     /* ── Sheet viewer overlay ── */
     #sheet-viewer-overlay {
@@ -616,52 +560,27 @@
       </div>
 
       <hr class="setting-divider" />
-      <div class="setting-section-title">Spreadsheet</div>
-      <button id="view-sheet-btn" onclick="openSheetViewer()">View spreadsheet</button>
+      <div class="setting-section-title">Roster</div>
+      <div class="setting-desc" id="roster-status-text">No roster loaded — all IDs will be accepted.</div>
+      <button id="upload-roster-btn" onclick="triggerRosterUpload()">Upload Roster CSV</button>
+      <div class="setting-desc" style="margin-top:6px;font-size:10px;">Column A = Student ID, Column B = Name. Header row optional.</div>
+      <button id="clear-roster-btn" onclick="clearRoster()">Clear roster</button>
+      <input type="file" id="roster-file-input" accept=".csv,text/csv" style="display:none" onchange="handleRosterUpload(event)" />
 
       <hr class="setting-divider" />
-      <div class="setting-section-title">Google Sheets sync</div>
-
-      <div class="setting-group">
-        <div class="setting-label">Web App URL</div>
-        <div class="setting-desc">Paste the URL from your deployed Google Apps Script here. Every scan will be written to your sheet automatically.</div>
-        <div class="setting-input-row">
-          <input type="url" id="setting-sheet-url" placeholder="https://script.google.com/macros/s/…/exec" />
-        </div>
-      </div>
-
-      <button id="test-connection-btn" onclick="testConnection()">Test connection</button>
-      <div id="connection-result"></div>
-      <button id="view-sheet-btn" onclick="openSheetViewer()">View spreadsheet</button>
+      <div class="setting-section-title">Data</div>
+      <button id="view-sheet-btn" onclick="openSheetViewer()">View activity log</button>
+      <button id="export-csv-btn" onclick="exportLogCSV()">Export log as CSV</button>
+      <button id="import-log-btn" onclick="triggerLogImport()">Import log from CSV</button>
+      <input type="file" id="log-file-input" accept=".csv,text/csv" style="display:none" onchange="handleLogImport(event)" />
 
       <br/>
       <button id="save-settings" onclick="saveSettings()">Save settings</button>
 
       <hr class="setting-divider" />
       <div class="setting-section-title">Danger zone</div>
-      <div class="setting-desc">This will permanently delete the local log and clear the connected sheet.</div>
+      <div class="setting-desc">This will permanently delete the local log.</div>
       <button id="clear-log-btn" onclick="clearLog()">Clear log</button>
-    </div>
-  </div>
-
-  <!-- Spreadsheet viewer -->
-  <div id="sheet-overlay" onclick="sheetOverlayClick(event)">
-    <div id="sheet-panel">
-      <h2>Spreadsheet Log <button id="close-sheet" onclick="closeSheetViewer()">✕</button></h2>
-      <button id="sheet-refresh-btn" onclick="loadSheetData()">↻ Refresh</button>
-      <div id="sheet-status"></div>
-      <div class="sheet-table-wrapper">
-        <table id="sheet-table">
-          <thead>
-            <tr>
-              <th>Date</th><th>Time</th><th>Student ID</th><th>Name</th><th>Action</th><th>Mins</th><th>Incident</th>
-            </tr>
-          </thead>
-          <tbody id="sheet-body">
-            <tr><td colspan="7" id="sheet-empty">Loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
     </div>
   </div>
 
@@ -676,7 +595,7 @@
     <div style="display:flex;align-items:center;gap:10px;">
       <div id="sync-status">
         <div class="sync-dot" id="sync-dot"></div>
-        <span id="sync-label">no sheet</span>
+        <span id="sync-label">no roster</span>
       </div>
       <button id="hamburger" onclick="openSettings()" aria-label="Settings">
         <span></span><span></span><span></span>
@@ -770,11 +689,11 @@
   </div><!-- end landscape-right -->
 </div>
 
-<!-- Sheet viewer modal -->
+<!-- Activity log viewer modal -->
 <div id="sheet-viewer-overlay" onclick="sheetViewerOverlayClick(event)">
   <div id="sheet-viewer-panel">
     <div id="sheet-viewer-header">
-      <span>Spreadsheet History</span>
+      <span>Activity Log History</span>
       <button id="close-sheet-viewer" onclick="closeSheetViewer()">✕</button>
     </div>
     <div id="sheet-viewer-body"></div>
@@ -790,7 +709,7 @@
   const STATUS_KEY    = 'restroom_pass_status';
   const CHECKOUT_KEY  = 'restroom_checkout_times';
   const SETTINGS_KEY  = 'restroom_settings';
-  const DEFAULT_URL   = 'https://script.google.com/macros/s/AKfycbx3QNCjfb4wXYZkW5TpsKLrzKFHLUcJmxxFZGh2FwDmW9JBCAubFw15GvmY4ltexKs/exec';
+  const ROSTER_KEY    = 'restroom_pass_roster';
   const SETTINGS_PIN  = '5700';
 
   /* ── Runtime state ── */
@@ -801,11 +720,10 @@
   let log           = [];
   let studentStatus = {};
   let checkoutTimes = {};
-  let syncError     = false;
-  let settings      = { maxMinutes: 15, sheetUrl: DEFAULT_URL, maxDailyLeaves: 0, maxWeeklyLeaves: 0, forcedOrientation: null };
+  let settings      = { maxMinutes: 15, maxDailyLeaves: 0, maxWeeklyLeaves: 0, forcedOrientation: null };
   let pinMode       = false;
   let pinBuffer     = '';
-  let roster        = null; // null = not loaded yet; Map<id,name> when loaded
+  let roster        = null; // null = not loaded; Map<id,name> when loaded
 
   /* ═══════════════════════════════
      SETTINGS
@@ -815,12 +733,10 @@
       const s = localStorage.getItem(SETTINGS_KEY);
       if (s) settings = Object.assign(settings, JSON.parse(s));
     } catch(e) {}
-    if (!settings.sheetUrl) settings.sheetUrl = DEFAULT_URL;
     document.getElementById('setting-max-time').value   = settings.maxMinutes;
     document.getElementById('setting-max-daily').value  = settings.maxDailyLeaves;
     document.getElementById('setting-max-weekly').value = settings.maxWeeklyLeaves;
-    document.getElementById('setting-sheet-url').value  = settings.sheetUrl;
-    updateSyncIndicator();
+    loadRosterFromStorage();
     applyOrientation();
   }
 
@@ -828,10 +744,7 @@
     settings.maxMinutes      = parseInt(document.getElementById('setting-max-time').value)   || 15;
     settings.maxDailyLeaves  = parseInt(document.getElementById('setting-max-daily').value)  || 0;
     settings.maxWeeklyLeaves = parseInt(document.getElementById('setting-max-weekly').value) || 0;
-    settings.sheetUrl        = document.getElementById('setting-sheet-url').value.trim();
     try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch(e) {}
-    updateSyncIndicator();
-    syncReadRoster();
     closeSettings();
     showToast('Settings saved', 'neutral');
   }
@@ -839,7 +752,6 @@
   function openSettings()  { showPinPrompt(); }
   function closeSettings() {
     document.getElementById('settings-overlay').classList.remove('open');
-    document.getElementById('connection-result').style.display = 'none';
   }
   function overlayClick(e) {
     if (e.target === document.getElementById('settings-overlay')) closeSettings();
@@ -916,235 +828,204 @@
   });
 
   /* ═══════════════════════════════
-     GOOGLE SHEETS SYNC
+     ROSTER
   ═══════════════════════════════ */
 
-  /* Update the header sync dot */
-  function updateSyncIndicator(state) {
-    const dot   = document.getElementById('sync-dot');
-    const label = document.getElementById('sync-label');
-    if (!settings.sheetUrl) {
-      dot.className = 'sync-dot';
-      label.textContent = 'no sheet';
-      return;
+  /* Load roster from localStorage and update UI */
+  function loadRosterFromStorage() {
+    try {
+      const saved = localStorage.getItem(ROSTER_KEY);
+      if (saved) {
+        const arr = JSON.parse(saved);
+        roster = new Map(arr.map(r => [String(r.id).trim(), r.name]));
+      } else {
+        roster = null;
+      }
+    } catch(e) {
+      roster = null;
     }
-    if (state === 'syncing') {
-      dot.className = 'sync-dot syncing';
-      label.textContent = 'syncing…';
-    } else if (state === 'error') {
-      dot.className = 'sync-dot error';
-      label.textContent = 'sync error';
+    updateRosterIndicator();
+  }
+
+  /* Update header dot and settings text to reflect roster state */
+  function updateRosterIndicator() {
+    const dot        = document.getElementById('sync-dot');
+    const label      = document.getElementById('sync-label');
+    const statusText = document.getElementById('roster-status-text');
+    if (roster && roster.size > 0) {
+      dot.className     = 'sync-dot ok';
+      label.textContent = roster.size + ' students';
+      if (statusText) statusText.textContent = roster.size + ' students loaded.';
     } else {
-      dot.className = 'sync-dot ok';
-      label.innerHTML = 'sheet<br>linked';
+      dot.className     = 'sync-dot';
+      label.textContent = 'no roster';
+      if (statusText) statusText.textContent = 'No roster loaded — all IDs will be accepted.';
     }
   }
 
-  /* Post a single entry to the sheet — fire and forget, never blocks the UI */
-  async function syncAppendToSheet(entry) {
-    if (!settings.sheetUrl) return;
-    updateSyncIndicator('syncing');
-    try {
-      await fetch(settings.sheetUrl, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'append', entry })
-      });
-      lastWriteTime = Date.now();
-      syncError = false;
-      updateSyncIndicator('ok');
-    } catch(e) {
-      syncError = true;
-      updateSyncIndicator('error');
-    }
+  /* Open the hidden roster file picker */
+  function triggerRosterUpload() {
+    document.getElementById('roster-file-input').value = '';
+    document.getElementById('roster-file-input').click();
   }
 
-  /* Tell the sheet to clear all rows — called alongside local clearLog() */
-  async function syncClearSheet() {
-    if (!settings.sheetUrl) return;
-    updateSyncIndicator('syncing');
-    try {
-      await fetch(settings.sheetUrl, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'clear' })
-      });
-      syncError = false;
-      updateSyncIndicator('ok');
-    } catch(e) {
-      syncError = true;
-      updateSyncIndicator('error');
-    }
+  /* Handle roster CSV file selected by the user */
+  function handleRosterUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const result = parseRosterCSV(e.target.result);
+      if (result.error) { showToast('Roster error: ' + result.error, 'neutral'); return; }
+      roster = new Map(result.rows.map(r => [r.id, r.name]));
+      try { localStorage.setItem(ROSTER_KEY, JSON.stringify(result.rows)); } catch(err) {}
+      updateRosterIndicator();
+      showToast(result.rows.length + ' students loaded', 'in');
+    };
+    reader.readAsText(file);
   }
 
-  /* Fetch the Roster tab and build a Map of id → name */
-  async function syncReadRoster() {
-    if (!settings.sheetUrl) return;
-    try {
-      const response = await fetch(settings.sheetUrl + '?action=readRoster', { method: 'GET' });
-      const json     = await response.json();
-      if (!json.ok || !Array.isArray(json.roster)) return;
-      roster = new Map(json.roster.map(r => [String(r.id).trim(), r.name]));
-    } catch(e) {
-      // Silent fail — roster stays null, entries will be logged as 'Unrecognized'
+  /* Parse roster CSV text → [{id, name}]. Handles optional header row. */
+  function parseRosterCSV(text) {
+    const lines = text.split(/\r?\n/).filter(l => l.trim());
+    if (lines.length === 0) return { error: 'File is empty', rows: [] };
+    // Treat first row as header if its first column is non-numeric
+    const firstCols = parseCSVLine(lines[0]);
+    const firstId   = firstCols[0] ? firstCols[0].trim() : '';
+    const startIdx  = (firstId && isNaN(firstId)) ? 1 : 0;
+    const rows = [];
+    for (let i = startIdx; i < lines.length; i++) {
+      const cols = parseCSVLine(lines[i]);
+      const id   = cols[0] ? String(cols[0]).trim() : '';
+      const name = cols[1] ? String(cols[1]).trim() : '';
+      if (id) rows.push({ id, name });
     }
+    if (rows.length === 0) return { error: 'No valid rows found', rows: [] };
+    return { error: null, rows };
   }
 
-  /* Poll the sheet every 15s — rebuilds state from sheet so all devices stay in sync */
-  let lastWriteTime = 0;
-  async function syncReadFromSheet() {
-    if (!settings.sheetUrl) return;
-    // Skip this poll if we wrote very recently (give the sheet time to update)
-    if (Date.now() - lastWriteTime < 5000) return;
-    try {
-      const response = await fetch(settings.sheetUrl + '?action=read', { method: 'GET' });
-      const json     = await response.json();
-      if (!json.ok || !Array.isArray(json.entries)) return;
+  /* Remove the roster entirely */
+  function clearRoster() {
+    if (!confirm('Remove the loaded roster? Students will no longer be validated against a list.')) return;
+    roster = null;
+    try { localStorage.removeItem(ROSTER_KEY); } catch(e) {}
+    updateRosterIndicator();
+    showToast('Roster cleared', 'neutral');
+  }
 
-      // Detect sheet ordering by comparing first vs last checkoutTimestamp
-      const outEntries = json.entries.filter(e => e.action === 'out' && e.checkoutTimestamp);
-      const newestFirst = outEntries.length >= 2
-        && outEntries[0].checkoutTimestamp > outEntries[outEntries.length - 1].checkoutTimestamp;
+  /* ═══════════════════════════════
+     CSV IMPORT / EXPORT
+  ═══════════════════════════════ */
 
-      // Normalise to newest-first so first entry per student = their current status
-      const ordered = newestFirst ? json.entries : [...json.entries].reverse();
+  /* Open the hidden log import file picker */
+  function triggerLogImport() {
+    document.getElementById('log-file-input').value = '';
+    document.getElementById('log-file-input').click();
+  }
 
-      const newStatus        = {};
-      const newCheckoutTimes = {};
-      const seenIds          = new Set();
-      ordered.forEach(e => {
-        if (!e.id || e.action === 'denied') return;
-        if (seenIds.has(e.id)) return;   // first seen = most recent
-        seenIds.add(e.id);
-        newStatus[e.id] = e.action;
-        if (e.action === 'out' && e.checkoutTimestamp) {
-          newCheckoutTimes[e.id] = e.checkoutTimestamp;
+  /* Handle log CSV file selected by the user */
+  function handleLogImport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const result = parseLogCSV(e.target.result);
+      if (result.error) { showToast('Import error: ' + result.error, 'neutral'); return; }
+      if (!confirm('Import ' + result.entries.length + ' entries? This will replace the current log.')) return;
+      log = result.entries;
+      // Rebuild student status from log (newest-first order assumed)
+      studentStatus = {};
+      checkoutTimes = {};
+      const seen = new Set();
+      for (const entry of log) {
+        if (!entry.id || entry.action === 'denied') continue;
+        if (seen.has(entry.id)) continue;
+        seen.add(entry.id);
+        studentStatus[entry.id] = entry.action;
+        if (entry.action === 'out' && entry.checkoutTimestamp) {
+          checkoutTimes[entry.id] = entry.checkoutTimestamp;
         }
-      });
-
-      log           = json.entries;
-      studentStatus = newStatus;
-      checkoutTimes = newCheckoutTimes;
+      }
       saveToStorage();
-
-      syncError = false;
-      updateSyncIndicator('ok');
       updateTable();
       updateTheme();
-      updateSavedNote();
-    } catch(e) {
-      // Silent fail — will retry on next interval
+      showToast(result.entries.length + ' entries imported', 'in');
+    };
+    reader.readAsText(file);
+  }
+
+  /* Parse log CSV text → [{date, time, id, name, action, minsGone, checkoutTimestamp, incident}] */
+  function parseLogCSV(text) {
+    const lines = text.split(/\r?\n/).filter(l => l.trim());
+    if (lines.length < 2) return { error: 'File is empty or has no data rows', entries: [] };
+    const entries = [];
+    for (let i = 1; i < lines.length; i++) { // skip header row
+      const cols = parseCSVLine(lines[i]);
+      if (cols.length < 5) continue;
+      entries.push({
+        date:              cols[0] || '',
+        time:              cols[1] || '',
+        id:                cols[2] || '',
+        name:              cols[3] || '',
+        action:            cols[4] || '',
+        minsGone:          cols[5] !== '' && cols[5] !== undefined ? Number(cols[5]) : null,
+        checkoutTimestamp: cols[6] ? Number(cols[6]) : null,
+        incident:          cols[7] || ''
+      });
     }
+    if (entries.length === 0) return { error: 'No valid rows found', entries: [] };
+    return { error: null, entries };
   }
 
-  /* ── Spreadsheet viewer ── */
-  function openSheetViewer() {
-    document.getElementById('sheet-overlay').classList.add('open');
-    loadSheetData();
+  /* Download the current log as a CSV file */
+  function exportLogCSV() {
+    if (log.length === 0) { showToast('No log data to export', 'neutral'); return; }
+    const header = ['Date', 'Time', 'Student ID', 'Name', 'Action', 'Minutes Gone', 'Checkout Timestamp', 'Incident'];
+    const rows   = log.map(e => [
+      e.date  || '',
+      e.time  || '',
+      e.id    || '',
+      e.name  || '',
+      e.action || '',
+      e.minsGone !== null && e.minsGone !== undefined ? e.minsGone : '',
+      e.checkoutTimestamp || '',
+      e.incident || ''
+    ]);
+    const csv  = [header, ...rows].map(r => r.map(v => csvCell(String(v))).join(',')).join('\r\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'restroom-log-' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Log exported', 'in');
   }
 
-  function closeSheetViewer() {
-    document.getElementById('sheet-overlay').classList.remove('open');
-  }
-
-  function sheetOverlayClick(e) {
-    if (e.target === document.getElementById('sheet-overlay')) closeSheetViewer();
-  }
-
-  async function loadSheetData() {
-    const status = document.getElementById('sheet-status');
-    const tbody  = document.getElementById('sheet-body');
-    status.textContent = 'Loading…';
-    tbody.innerHTML = '<tr><td colspan="7" id="sheet-empty">Loading…</td></tr>';
-
-    if (!settings.sheetUrl) {
-      status.textContent = 'No sheet URL configured.';
-      return;
+  /* ── CSV helpers ── */
+  function csvCell(val) {
+    if (val.includes(',') || val.includes('"') || val.includes('\n')) {
+      return '"' + val.replace(/"/g, '""') + '"';
     }
-
-    try {
-      const response = await fetch(settings.sheetUrl + '?action=read', { method: 'GET' });
-      const json     = await response.json();
-      if (!json.ok || !Array.isArray(json.entries)) {
-        status.textContent = 'Error loading data.';
-        return;
-      }
-
-      const entries = [...json.entries].reverse(); // newest first
-      status.textContent = entries.length + ' row' + (entries.length !== 1 ? 's' : '') + ' · Last refreshed ' + fmt(new Date());
-
-      if (entries.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" id="sheet-empty">No data in spreadsheet yet.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = entries.map(e => {
-        const actionBadge = e.action === 'out'
-          ? '<span class="badge badge-out">Out</span>'
-          : '<span class="badge badge-in">In</span>';
-        const incidentCell = e.incident
-          ? `<td class="incident-cell">${e.incident}</td>`
-          : '<td style="color:var(--text-muted)">—</td>';
-        const mins = e.minsGone !== null && e.minsGone !== undefined ? e.minsGone + ' min' : '—';
-        const nameDisplay = e.name || '<span style="color:var(--text-muted)">—</span>';
-        return `<tr>
-          <td style="color:var(--text-muted);white-space:nowrap;">${e.date}</td>
-          <td style="color:var(--text-muted);white-space:nowrap;">${e.time}</td>
-          <td><strong>${e.id}</strong></td>
-          <td>${nameDisplay}</td>
-          <td>${actionBadge}</td>
-          <td class="mins-cell">${mins}</td>
-          ${incidentCell}
-        </tr>`;
-      }).join('');
-    } catch(err) {
-      status.textContent = 'Could not reach the sheet.';
-      tbody.innerHTML = '<tr><td colspan="7" id="sheet-empty">Connection failed.</td></tr>';
-    }
+    return val;
   }
 
-  /* Reconnect loop — retries every 30s when the sheet is in an error state */
-  async function reconnectLoop() {
-    if (!syncError || !settings.sheetUrl) return;
-    try {
-      const response = await fetch(settings.sheetUrl + '?action=read', { method: 'GET' });
-      const json = await response.json();
-      if (json.ok) { syncError = false; updateSyncIndicator('ok'); }
-    } catch(e) { /* still down, will retry */ }
-  }
-
-  /* Test connection button in settings */
-  async function testConnection() {
-    const url = document.getElementById('setting-sheet-url').value.trim();
-    const res = document.getElementById('connection-result');
-    res.style.display = 'none';
-
-    if (!url) {
-      res.className = 'error';
-      res.textContent = 'Please enter a Web App URL first.';
-      res.style.display = 'block';
-      return;
-    }
-
-    res.className = '';
-    res.textContent = 'Testing…';
-    res.style.display = 'block';
-
-    try {
-      const response = await fetch(url + '?action=read', { method: 'GET' });
-      const json     = await response.json();
-      if (json.ok) {
-        res.className   = 'ok';
-        res.textContent = 'Connected! Sheet is accessible and ready.';
-        settings.sheetUrl = url;
-        try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch(e) {}
-        updateSyncIndicator();
+  function parseCSVLine(line) {
+    const result = [];
+    let cur = '', inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQuotes && line[i + 1] === '"') { cur += '"'; i++; }
+        else { inQuotes = !inQuotes; }
+      } else if (ch === ',' && !inQuotes) {
+        result.push(cur); cur = '';
       } else {
-        res.className   = 'error';
-        res.textContent = 'Sheet responded but returned an error: ' + (json.error || 'unknown');
+        cur += ch;
       }
-    } catch(e) {
-      res.className   = 'error';
-      res.textContent = 'Could not reach the sheet. Check the URL and make sure the script is deployed as "Anyone" access.';
     }
+    result.push(cur);
+    return result;
   }
 
   /* ═══════════════════════════════
@@ -1326,7 +1207,7 @@
     lastScanned  = id;
     lastScanTime = now;
 
-    // Validate against roster if it has been loaded
+    // Validate against roster if one has been loaded
     let name;
     if (roster !== null) {
       name = roster.get(id);
@@ -1356,7 +1237,6 @@
         };
         log.unshift(deniedEntry);
         saveToStorage();
-        syncAppendToSheet(deniedEntry);
         showLimitDeniedMessage(deniedReason);
         if (fromCamera) setTimeout(() => stopCamera(), 300);
         return;
@@ -1398,9 +1278,6 @@
     saveToStorage();
     updateTable();
     updateTheme();
-
-    // Sync to Google Sheets (non-blocking)
-    syncAppendToSheet(entry);
 
     if (action === 'in' && minsGone !== null) {
       if (fromCamera) flashScreen();
@@ -1471,10 +1348,9 @@
      ACTIONS
   ═══════════════════════════════ */
   function clearLog() {
-    if (!confirm('Clear the entire log? This will also clear the Google Sheet if connected.')) return;
+    if (!confirm('Clear the entire log? This cannot be undone.')) return;
     log = []; studentStatus = {}; checkoutTimes = {}; lastScanned = '';
     saveToStorage(); updateTable(); updateTheme();
-    syncClearSheet();
     closeSettings();
     showToast('Log cleared', 'neutral');
   }
@@ -1508,48 +1384,42 @@
   }
 
   /* ═══════════════════════════════
-     SHEET VIEWER
+     ACTIVITY LOG VIEWER
   ═══════════════════════════════ */
-  async function openSheetViewer() {
+  function openSheetViewer() {
     const overlay = document.getElementById('sheet-viewer-overlay');
     const body    = document.getElementById('sheet-viewer-body');
     overlay.classList.add('open');
-    body.innerHTML = '<div class="sv-loading">Loading…</div>';
 
-    if (!settings.sheetUrl) {
-      body.innerHTML = '<div class="sv-error">No sheet URL configured. Add one in Settings first.</div>';
+    if (log.length === 0) {
+      body.innerHTML = '<div class="sv-empty">No records in the log yet.</div>';
       return;
     }
 
-    try {
-      const response = await fetch(settings.sheetUrl + '?action=read', { method: 'GET' });
-      const json     = await response.json();
-      if (!json.ok || !Array.isArray(json.entries)) {
-        body.innerHTML = '<div class="sv-error">Sheet returned an error: ' + (json.error || 'unknown') + '</div>';
-        return;
-      }
-      if (json.entries.length === 0) {
-        body.innerHTML = '<div class="sv-empty">No records in the sheet yet.</div>';
-        return;
-      }
-      const rows = json.entries.map(e => `<tr>
+    const rows = log.map(e => {
+      const actionClass = e.action === 'out' ? 'badge-out'
+                        : e.action === 'denied' ? 'badge-late'
+                        : 'badge-in';
+      const actionLabel = e.action === 'out' ? 'Out'
+                        : e.action === 'denied' ? 'Denied'
+                        : 'In';
+      return `<tr>
         <td style="color:var(--text-muted)">${e.date || '—'}</td>
         <td style="color:var(--text-muted)">${e.time || '—'}</td>
         <td><strong>${e.id || '—'}</strong></td>
         <td>${e.name || '—'}</td>
-        <td><span class="badge ${e.action === 'out' ? 'badge-out' : 'badge-in'}">${e.action === 'out' ? 'Out' : 'In'}</span></td>
+        <td><span class="badge ${actionClass}">${actionLabel}</span></td>
         <td class="mins-cell">${e.minsGone !== null && e.minsGone !== undefined ? e.minsGone + ' min' : '—'}</td>
         <td style="color:var(--text-muted);font-size:11px;">${e.incident || ''}</td>
-      </tr>`).join('');
-      body.innerHTML = `<table id="sv-table">
-        <thead><tr>
-          <th>Date</th><th>Time</th><th>Student ID</th><th>Name</th><th>Action</th><th>Mins</th><th>Incident</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
-    } catch(e) {
-      body.innerHTML = '<div class="sv-error">Could not reach the sheet. Check your connection.</div>';
-    }
+      </tr>`;
+    }).join('');
+
+    body.innerHTML = `<table id="sv-table">
+      <thead><tr>
+        <th>Date</th><th>Time</th><th>Student ID</th><th>Name</th><th>Action</th><th>Mins</th><th>Incident</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
   }
 
   function closeSheetViewer() {
@@ -1564,10 +1434,6 @@
   loadSettings();
   loadFromStorage();
   setInterval(() => { if (Object.values(studentStatus).some(v => v === 'out')) updateTable(); }, 10000);
-  setInterval(reconnectLoop, 30000);
-  setInterval(syncReadFromSheet, 5000);
-  syncReadFromSheet(); // initial load from sheet on startup
-  syncReadRoster();    // load student roster on startup
 </script>
 </body>
 </html>
